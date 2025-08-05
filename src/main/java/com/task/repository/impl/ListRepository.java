@@ -1,11 +1,11 @@
 package com.task.repository.impl;
 
-import com.task.repository.SimpleListRepository;
+import com.task.repository.SimpleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListRepository<T> implements SimpleListRepository<T> {
+public class ListRepository<T> implements SimpleRepository<T> {
 
     private final List<T> objects;
 

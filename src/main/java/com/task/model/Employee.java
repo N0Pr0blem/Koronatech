@@ -17,6 +17,8 @@ public class Employee {
 
     @Override
     public String toString() {
-        return String.format(Locale.US,"Employee,%d,%s,%.2f,%d",id,name,salary,managerId);
+        String salary_str = String.format(Locale.US,"%.2f",salary);
+        salary_str = salary_str.replace(".00","");
+        return String.format("Employee,%d,%s,%s,%d",id,name,salary_str,managerId);
     }
 }

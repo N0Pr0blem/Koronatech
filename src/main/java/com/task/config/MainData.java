@@ -2,7 +2,7 @@ package com.task.config;
 
 import com.task.model.Employee;
 import com.task.model.Manager;
-import com.task.repository.SimpleListRepository;
+import com.task.repository.SimpleRepository;
 import com.task.repository.impl.ListRepository;
 import lombok.Getter;
 
@@ -10,10 +10,11 @@ import lombok.Getter;
 public class MainData {
     private static final MainData INSTANCE = new MainData();
 
-    private final SimpleListRepository<Employee> employees = new ListRepository<>();
-    private final SimpleListRepository<Manager> managers = new ListRepository<>();
+    private final SimpleRepository<Employee> employees = new ListRepository<>();
+    private final SimpleRepository<Manager> managers = new ListRepository<>();
+    private final SimpleRepository<String> errors = new ListRepository<>();
 
-    private static MainData getInstance() {
+    public static MainData getInstance() {
         return INSTANCE;
     }
 }
