@@ -12,8 +12,9 @@ public class MainData {
 
     private final SimpleListRepository<Employee> employees = new ListRepository<>();
     private final SimpleListRepository<Manager> managers = new ListRepository<>();
+    private final SimpleListRepository<String> errors = new ListRepository<>();
 
-    private static MainData getInstance() {
+    public static MainData getInstance() {
         return INSTANCE;
     }
 }
