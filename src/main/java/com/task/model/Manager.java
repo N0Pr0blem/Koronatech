@@ -20,6 +20,6 @@ public class Manager {
     public String toString() {
         String salary_str = String.format(Locale.US,"%.2f",salary);
         salary_str = salary_str.replace(".00","");
-        return String.format("Manager,%d,%s,%s,%s",id,name,salary_str,departmentName);
+        return String.format("Manager,%d,%s,%s",id,name,salary_str);
     }
 }
