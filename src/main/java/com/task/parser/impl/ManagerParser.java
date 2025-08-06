@@ -4,7 +4,7 @@ import com.task.model.Manager;
 import com.task.parser.Parser;
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class ManagerParser implements Parser<Manager> {
+public class ManagerParser implements Parser<Manager,String> {
 
     private final int MANAGER_FIELD_COUNT = 4;
     private int id;

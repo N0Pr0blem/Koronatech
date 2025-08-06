@@ -4,7 +4,7 @@ import com.task.model.Employee;
 import com.task.parser.Parser;
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class EmployeeParser implements Parser<Employee> {
+public class EmployeeParser implements Parser<Employee,String> {
     private final int EMPLOYEE_FIELD_COUNT = 4;
     private int id, managerId;
     private String name;
