@@ -1,7 +1,8 @@
 package com.task;
 
 import com.task.input.impl.FileInputManager;
-import com.task.output.ConsoleOutputManager;
+import com.task.output.manager.OutputManager;
+import com.task.output.manager.impl.FileOutputManager;
 import com.task.output.format.impl.BaseFormatter;
 
 import java.io.IOException;
@@ -9,8 +10,8 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         FileInputManager fileInputManager = new FileInputManager();
-        ConsoleOutputManager consoleOutputManager = new ConsoleOutputManager();
+        OutputManager outputManager = new FileOutputManager();
         fileInputManager.readData();
-        consoleOutputManager.print(new BaseFormatter());
+        outputManager.print(new BaseFormatter());
     }
 }
