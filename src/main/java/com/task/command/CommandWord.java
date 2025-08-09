@@ -13,12 +13,11 @@ public enum CommandWord {
     SORT(List.of("--sort", "-s"), CommandWordType.COMMAND),
 
     PATH(List.of("--path"), CommandWordType.PARAM),
-    OUTPUT(List.of("--output", "-o"), CommandWordType.COMMAND),
-
+    OUTPUT(List.of("--output", "-o"), CommandWordType.SUBCOMMAND),
     STAT(List.of("--stat"), CommandWordType.COMMAND);
 
     public enum CommandWordType {
-        COMMAND, PARAM;
+        COMMAND,SUBCOMMAND, PARAM;
     }
 
     final List<String> prefixes;

@@ -1,12 +1,13 @@
 package com.task.config;
 
 import com.task.model.Manager;
-import com.task.output.manager.OutputManager;
-import com.task.output.manager.impl.FileOutputManager;
+import com.task.output.printer.Printer;
+import com.task.output.printer.impl.ConsolePrinter;
 import com.task.repository.SimpleRepository;
 import com.task.repository.impl.EmployeeListRepository;
 import com.task.repository.impl.ListRepository;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class MainData {
@@ -15,7 +16,9 @@ public class MainData {
     private final EmployeeListRepository employeeRepository = new EmployeeListRepository();
     private final SimpleRepository<Manager> managerRepository = new ListRepository<>();
     private final SimpleRepository<String> errorsRepository = new ListRepository<>();
-    OutputManager outputManager = new FileOutputManager();
+
+    @Setter
+    private Printer outputStatSource = new ConsolePrinter();
 
     public static MainData getInstance() {
         return INSTANCE;

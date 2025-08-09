@@ -36,6 +36,17 @@ public class CommandParser implements Parser<List<CommandContext>,String[]> {
                 }
                 result.add(commandContext);
             }
+            else if(word.getWordType().equals(CommandWord.CommandWordType.SUBCOMMAND)){
+                CommandContext commandContext = new CommandContext(word.name().toLowerCase());
+                if(line.contains("=")){
+                    String[] parts = line.split("=");
+                    commandContext.addArgs(word.name().toLowerCase(),parts[1]);
+                }
+                else {
+                    commandContext.addArgs(word.name().toLowerCase(), word.name().toLowerCase());
+                }
+                result.get(result.size()-1).addSubcommand(commandContext);
+            }
         });
 
         return result;
