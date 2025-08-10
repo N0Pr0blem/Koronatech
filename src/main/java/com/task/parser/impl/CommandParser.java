@@ -1,54 +1,71 @@
 package com.task.parser.impl;
 
 import com.task.command.CommandContext;
-import com.task.command.CommandWord;
+import com.task.command.prefix.CommandPrefix;
+import com.task.command.prefix.ParamPrefix;
+import com.task.command.prefix.SubcommandPrefix;
+import com.task.command.prefix.base.ParamType;
 import com.task.parser.Parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CommandParser implements Parser<List<CommandContext>,String[]> {
+public class CommandParser implements Parser<List<CommandContext>, String[]> {
     @Override
     public List<CommandContext> parse(String[] args) {
         List<CommandContext> result = new ArrayList<>();
         List<String> commandLines = Arrays.stream(args).toList();
 
         commandLines.forEach(line->{
-            CommandWord word = CommandWord.fromString(line);
-            if(word.getWordType().equals(CommandWord.CommandWordType.PARAM)){
-                if(!result.isEmpty()){
-                    String[] parts = line.split("=");
-                    result.get(result.size()-1).addArgs(word.name().toLowerCase(),parts[1]);
-                }
-                else{
-                    throw new IllegalArgumentException("Wrong command line format");
-                }
-            }
-            else if(word.getWordType().equals(CommandWord.CommandWordType.COMMAND)){
-                CommandContext commandContext = new CommandContext(word.name().toLowerCase());
-                if(line.contains("=")){
-                    String[] parts = line.split("=");
-                    commandContext.addArgs(word.name().toLowerCase(),parts[1]);
-                }
-                else {
-                    commandContext.addArgs(word.name().toLowerCase(), word.name().toLowerCase());
-                }
+            CommandContext commandContext;
+            CommandPrefix commandPrefix = CommandPrefix.fromString(line);
+
+            if(!commandPrefix.equals(CommandPrefix.NOT_COMMAND)){
+                commandContext = new CommandContext(commandPrefix.getTitle(), getValueFromString(line));
                 result.add(commandContext);
             }
-            else if(word.getWordType().equals(CommandWord.CommandWordType.SUBCOMMAND)){
-                CommandContext commandContext = new CommandContext(word.name().toLowerCase());
-                if(line.contains("=")){
-                    String[] parts = line.split("=");
-                    commandContext.addArgs(word.name().toLowerCase(),parts[1]);
+            else if(!result.isEmpty()){
+                SubcommandPrefix subcommandPrefix = SubcommandPrefix.fromString(line);
+                ParamPrefix paramPrefix = ParamPrefix.fromString(line);
+
+                if(!subcommandPrefix.equals(SubcommandPrefix.NOT_SUBCOMMAND)){
+                    result.get(result.size()-1)
+                            .addSubcommand(subcommandPrefix,new CommandContext(subcommandPrefix.name(), getValueFromString(line)));
                 }
-                else {
-                    commandContext.addArgs(word.name().toLowerCase(), word.name().toLowerCase());
+                else if(!paramPrefix.equals(ParamPrefix.NOT_PARAM)){
+                    if(paramPrefix.getParamOf().equals(ParamType.COMMAND)){
+                        result.get(result.size()-1)
+                                .addParam(paramPrefix,getValueFromString(line));
+                    }
+                    else if(paramPrefix.getParamOf().equals(ParamType.SUBCOMMAND)){
+                        commandContext = result.get(result.size()-1);
+                        CommandContext subcommandContext = commandContext.getLastSubcommand();
+                        subcommandContext.addParam(paramPrefix, getValueFromString(line));
+                    }
                 }
-                result.get(result.size()-1).addSubcommand(commandContext);
+                else{
+                    throw new IllegalArgumentException("Unknown word");
+                }
             }
+            else{
+                throw new IllegalArgumentException("Wrong input format");
+            }
+
         });
 
         return result;
     }
+
+    public String getValueFromString(String line){
+        String value = "";
+        if(line.contains("=")){
+            String[] args = line.trim().split("=");
+            if(args.length==2) {
+                value = args[1];
+            }
+        }
+         return value;
+    }
+
 }

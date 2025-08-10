@@ -1,59 +1,73 @@
 package com.task.command;
 
-import com.task.command.impl.OutputCommand;
 import com.task.command.impl.SortCommand;
 import com.task.command.impl.StatCommand;
-import com.task.output.printer.impl.ConsolePrinter;
+import com.task.command.prefix.CommandPrefix;
+import com.task.command.prefix.ParamPrefix;
+import com.task.command.prefix.SubcommandPrefix;
+import com.task.command.specification.CommandSpecification;
+import com.task.command.specification.SortCommandSpecification;
+import com.task.command.specification.StatCommandSpecification;
 import com.task.output.printer.impl.FilePrinter;
-import com.task.validator.impl.CommandValidator;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
-public class CommandExecutor implements Command{
+public class CommandExecutor implements Command {
 
     private final List<CommandContext> contextList;
-    private final CommandValidator commandValidator;
+
+    private final Map<String, CommandSpecification> validators = Map.of(
+            CommandPrefix.SORT.getTitle(), new SortCommandSpecification(),
+            CommandPrefix.STAT.getTitle(), new StatCommandSpecification()
+    );
+
+    private final Map<String, Function<CommandContext, Command>> commandFactory = Map.of(
+            CommandPrefix.SORT.getTitle(), this::createSortCommand,
+            CommandPrefix.STAT.getTitle(), this::createStatCommand
+    );
 
     public CommandExecutor(List<CommandContext> contextList) {
         this.contextList = contextList;
-        commandValidator = new CommandValidator();
     }
 
     @Override
     public void execute() {
-        contextList.forEach(commandContext -> {
-            try{
-                if(commandValidator.validate(commandContext)){
-                    execute(commandContext);
-                }
-            }
-            catch (IllegalArgumentException ex){
-                System.out.println(ex.getMessage());
-            }
-        });
+        contextList.forEach(this::execute);
     }
 
-    private void execute(CommandContext commandContext) {
-        switch(commandContext.getCommand()){
-            case "sort"->{
-                new SortCommand(
-                        commandContext.getArg("sort"),
-                        !commandContext.getArg("order").equalsIgnoreCase("asc")
-                ).execute();
-            }
-            case "stat"->{
-                if(commandContext.getSubcommands().isEmpty()){
-                    new StatCommand().execute();
-                }
-                else{
-                    if(commandContext.getSubcommands().get(0).getArgs().size()==2) {
-                        new StatCommand(new FilePrinter(commandContext.getArg("path"))).execute();
-                    }
-                    else {
-                        new StatCommand(new ConsolePrinter()).execute();
-                    }
-                }
-            }
+    public void execute(CommandContext context) {
+        CommandSpecification specification = validators.get(context.getName());
+        if (specification.isSatisfiedBy(context)) {
+            Command command = commandFactory.getOrDefault(context.getName(), c -> {
+                throw new IllegalArgumentException("No such command");
+            }).apply(context);
+
+            command.execute();
+        } else {
+            System.out.println(specification.getErrorMessage());
         }
     }
+
+    private Command createSortCommand(CommandContext commandContext) {
+        String sortBy = commandContext.getValue();
+        boolean ascending = commandContext.getParam(ParamPrefix.ORDER).equals("asc");
+        return new SortCommand(sortBy, ascending);
+    }
+
+    private Command createStatCommand(CommandContext commandContext) {
+        if (commandContext.getSubcommands().isEmpty()
+                || commandContext.getSubcommand(SubcommandPrefix.OUTPUT).getParams().isEmpty()) {
+            return new StatCommand();
+        } else {
+            return new StatCommand(
+                    new FilePrinter(commandContext
+                            .getSubcommand(SubcommandPrefix.OUTPUT)
+                            .getParam(ParamPrefix.PATH)
+                    )
+            );
+        }
+    }
+
 }

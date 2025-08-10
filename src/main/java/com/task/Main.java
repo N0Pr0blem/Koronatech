@@ -13,12 +13,17 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        FileInputManager fileInputManager = new FileInputManager();
-        OutputManager outputManager = new FileOutputManager();
-        fileInputManager.readData();
-        List<CommandContext> commands = new CommandParser().parse(args);
-        CommandExecutor commandExecutor = new CommandExecutor(commands);
-        commandExecutor.execute();
-        outputManager.print(new BaseFormatter());
+        try {
+            FileInputManager fileInputManager = new FileInputManager();
+            OutputManager outputManager = new FileOutputManager();
+            fileInputManager.readData();
+            List<CommandContext> commands = new CommandParser().parse(args);
+            CommandExecutor commandExecutor = new CommandExecutor(commands);
+            commandExecutor.execute();
+            outputManager.print(new BaseFormatter());
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 }

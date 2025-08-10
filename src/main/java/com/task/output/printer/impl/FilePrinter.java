@@ -20,7 +20,7 @@ public class FilePrinter implements Printer {
         try {
             Files.writeString(path, content + System.lineSeparator(),
                     StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND);
+                    StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             System.out.println("Wrong file path: " + path);
         }
