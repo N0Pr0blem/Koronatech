@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public enum ParamPrefix {
-    PATH(List.of("--path"),ParamType.SUBCOMMAND),
-    ORDER(List.of("--order"),ParamType.COMMAND),
+    PATH(List.of("--path="),ParamType.SUBCOMMAND),
+    ORDER(List.of("--order="),ParamType.COMMAND),
     NOT_PARAM(Collections.emptyList(),null);
 
     final List<String> prefixes;

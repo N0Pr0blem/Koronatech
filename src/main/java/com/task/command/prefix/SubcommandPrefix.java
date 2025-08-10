@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public enum SubcommandPrefix {
-    OUTPUT(List.of("--output", "-o")),
+    OUTPUT(List.of("--output=", "-o=")),
     NOT_SUBCOMMAND(Collections.emptyList());
 
     final List<String> prefixes;

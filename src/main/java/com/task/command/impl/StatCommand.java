@@ -23,7 +23,7 @@ public class StatCommand implements Command {
     public void execute() {
         StringBuilder res = new StringBuilder();
 
-        res.append("department, min, max, mid\n");
+        res.append("department, min, max, mid\n\n");
         MainData.getInstance().getManagerRepository().findAll().sort(Comparator.comparing(Manager::getDepartmentName));
         for (Manager manager : MainData.getInstance().getManagerRepository().findAll()) {
             List<Employee> employees = new ArrayList<>(

@@ -10,24 +10,29 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public enum CommandPrefix {
+    SORT("sort", List.of("--sort=", "-s="), true),
+    STAT("stat", List.of("--stat"), false),
+    NOT_COMMAND(null, Collections.emptyList(), false);
 
-    SORT("sort",List.of("--sort", "-s")),
-    STAT("stat",List.of("--stat")),
-    NOT_COMMAND(null, Collections.emptyList());
-
-    final java.lang.String title;
-    final List<java.lang.String> prefixes;
-
-    final PrefixType type = PrefixType.COMMAND;
+    private final String title;
+    private final List<String> prefixes;
+    private final boolean requiresValue;
 
     public static CommandPrefix fromString(String line) {
-        for(CommandPrefix word : values()){
-            if(!word.prefixes.isEmpty()){
-                for(java.lang.String prefix : word.prefixes){
-                    if(line.startsWith(prefix)) return word;
+        line = line.trim();
+        for (CommandPrefix cmd : values()) {
+            for (String prefix : cmd.prefixes) {
+                if (cmd.requiresValue) {
+                    if (line.startsWith(prefix)) return cmd;
+                } else {
+                    if (
+                            line.equals(prefix) || (line.startsWith(prefix)
+                            && (line.length() == prefix.length() || Character.isWhitespace(line.charAt(prefix.length()))))
+                    ) {
+                        return cmd;
+                    }
                 }
             }
-
         }
         return NOT_COMMAND;
     }
