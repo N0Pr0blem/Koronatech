@@ -60,7 +60,7 @@ public class CommandParser implements Parser<List<CommandContext>, String[]> {
     public String getValueFromString(String line){
         String value = "";
         if(line.contains("=")){
-            String[] args = line.trim().split("=");
+            String[] args = line.trim().split("=",2);
             if(args.length==2) {
                 value = args[1];
             }

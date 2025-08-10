@@ -8,5 +8,5 @@ mvn clean package
 echo "Success!"
 echo "**************** RUN **********************"
 echo ""
-java -jar target/Koronatech-1.0-SNAPSHOT.jar -s=name --order=asc
+java -jar target/Koronatech-1.0-SNAPSHOT.jar -s=salary --order=desc --stat
 
