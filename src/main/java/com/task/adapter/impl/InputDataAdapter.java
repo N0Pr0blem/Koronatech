@@ -22,14 +22,14 @@ public class InputDataAdapter implements Adapter<Void,String> {
                 if(line.trim().charAt(0)=='E' || line.trim().charAt(0)=='e'){
                     Employee employee = employeeParser.parse(line);
                     MainData.getInstance().
-                            getEmployees().
+                            getEmployeeRepository().
                             save(employee);
                 }
                 else if(line.trim().charAt(0)=='M' || line.trim().charAt(0)=='m'){
                     Manager manager = managerParser.parse(line);
                     managerIds.add(manager.getId());
                     MainData.getInstance().
-                            getManagers().
+                            getManagerRepository().
                             save(manager);
                 }
                 else {
@@ -38,7 +38,7 @@ public class InputDataAdapter implements Adapter<Void,String> {
             }
             catch(IllegalArgumentException ex){
                 MainData.getInstance()
-                        .getErrors()
+                        .getErrorsRepository()
                         .save(line);
             }
         });
@@ -47,9 +47,9 @@ public class InputDataAdapter implements Adapter<Void,String> {
     }
 
     public void validEmployees() {
-        MainData.getInstance().getEmployees().findAll().removeIf(employee -> {
+        MainData.getInstance().getEmployeeRepository().findAll().removeIf(employee -> {
             if (!managerIds.contains(employee.getManagerId())) {
-                MainData.getInstance().getErrors().save(employee.toString());
+                MainData.getInstance().getErrorsRepository().save(employee.toString());
                 return true;
             }
             return false;

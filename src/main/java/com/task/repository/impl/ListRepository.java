@@ -3,6 +3,7 @@ package com.task.repository.impl;
 import com.task.repository.SimpleRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListRepository<T> implements SimpleRepository<T> {
@@ -21,5 +22,10 @@ public class ListRepository<T> implements SimpleRepository<T> {
     @Override
     public void save(T t) {
         objects.add(t);
+    }
+
+    @Override
+    public void sort(Comparator<T> comparator) {
+        objects.sort(comparator);
     }
 }

@@ -1,7 +1,6 @@
 package com.task.input.impl;
 
 import com.task.adapter.impl.InputDataAdapter;
-import com.task.input.Reader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,23 +14,22 @@ public class FileInputManager {
 
     private final String INPUT_FILES_DIRECTORY = "";
 
-    public void readData(){
-        try{
-            getPaths().forEach(p->{
+    public void readData() {
+        try {
+            getPaths().forEach(p -> {
                 adapter.adapt(new FileReader(p).getData());
             });
             adapter.validEmployees();
-        }
-        catch (IOException ex){
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    private List<String> getPaths() throws IOException{
+    private List<String> getPaths() throws IOException {
         try (Stream<Path> stream = Files.list(Paths.get(INPUT_FILES_DIRECTORY))) {
             return stream.filter(Files::isRegularFile)
                     .map(Path::toString)
-                    .filter(p->p.endsWith(".sb"))
+                    .filter(p -> p.endsWith(".sb"))
                     .toList();
         }
     }
