@@ -34,7 +34,11 @@ public class StatCommand implements Command {
             } else {
                 employees.sort(Comparator.comparing(Employee::getSalary));
                 res.append(manager.getDepartmentName())
-                        .append(String.format(Locale.US, ", %.2f, %.2f, %.2f\n", getMin(employees), getMax(employees), getMid(employees)));
+                        .append(String.format(", %s, %s, %s\n",
+                                MainData.getInstance().getDecimalFormat().format(getMin(employees)),
+                                MainData.getInstance().getDecimalFormat().format(getMax(employees)),
+                                MainData.getInstance().getDecimalFormat().format(getMid(employees)))
+                        );
             }
         }
 
