@@ -28,7 +28,7 @@ public class ManagerParser implements Parser<Manager,String> {
 
     private boolean validFields(String[] fields) {
         if (NumberUtils.isCreatable(fields[1].trim())
-                && NumberUtils.isDigits(fields[3].trim())
+                && NumberUtils.isCreatable(fields[3].trim())
         ) {
             id = Integer.parseInt(fields[1].trim());
             name = fields[2].trim();
