@@ -46,7 +46,7 @@ public class CommandExecutor implements Command {
 
             command.execute();
         } else {
-            System.out.println(specification.getErrorMessage());
+            throw new IllegalArgumentException(specification.getErrorMessage());
         }
     }
 

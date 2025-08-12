@@ -1,5 +1,6 @@
 package com.task.model;
 
+import com.task.config.MainData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +18,6 @@ public class Employee {
 
     @Override
     public String toString() {
-        String salary_str = String.format(Locale.US,"%.2f",salary);
-        salary_str = salary_str.replace(".00","");
-        return String.format("Employee,%d,%s,%s,%d",id,name,salary_str,managerId);
+        return String.format("Employee,%d,%s,%s,%d",id,name, MainData.getInstance().getDecimalFormat().format(salary),managerId);
     }
 }

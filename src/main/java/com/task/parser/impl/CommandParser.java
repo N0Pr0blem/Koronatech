@@ -45,11 +45,11 @@ public class CommandParser implements Parser<List<CommandContext>, String[]> {
                     }
                 }
                 else{
-                    throw new IllegalArgumentException("Unknown word");
+                    throw new IllegalArgumentException("Unknown command, subcommand or parameter: "+line);
                 }
             }
             else{
-                throw new IllegalArgumentException("Wrong input format");
+                throw new IllegalArgumentException("Incorrect command line format.A word is not a command: "+line);
             }
 
         });
