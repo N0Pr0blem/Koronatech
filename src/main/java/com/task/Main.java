@@ -21,7 +21,7 @@ public class Main {
             CommandExecutor commandExecutor = new CommandExecutor(commands);
             commandExecutor.execute();
             outputManager.print(new BaseFormatter());
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | IOException ex) {
             System.out.println(ex.getMessage());
         }
 

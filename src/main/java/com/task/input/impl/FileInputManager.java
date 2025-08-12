@@ -14,23 +14,23 @@ public class FileInputManager {
 
     private final String INPUT_FILES_DIRECTORY = "";
 
-    public void readData() {
-        try {
-            getPaths().forEach(p -> {
-                adapter.adapt(new FileReader(p).getData());
-            });
-            adapter.validEmployees();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public void readData() throws IOException {
+        getPaths().forEach(p -> {
+            adapter.adapt(new FileReader(p).getData());
+        });
+        adapter.validEmployees();
     }
 
     private List<String> getPaths() throws IOException {
         try (Stream<Path> stream = Files.list(Paths.get(INPUT_FILES_DIRECTORY))) {
-            return stream.filter(Files::isRegularFile)
+            List<String> paths = stream.filter(Files::isRegularFile)
                     .map(Path::toString)
                     .filter(p -> p.endsWith(".sb"))
                     .toList();
+            if (paths.isEmpty()) {
+                throw new IOException("Files *.sb doesn't exist");
+            }
+            return paths;
         }
     }
 }

@@ -49,7 +49,7 @@ public class CommandParser implements Parser<List<CommandContext>, String[]> {
                 }
             }
             else{
-                throw new IllegalArgumentException("Incorrect command line format.A word is not a command: "+line);
+                throw new IllegalArgumentException("Incorrect command line format.Argument is not a command: "+line);
             }
 
         });
