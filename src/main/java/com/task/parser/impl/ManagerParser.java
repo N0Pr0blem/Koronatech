@@ -35,6 +35,8 @@ public class ManagerParser implements Parser<Manager,String> {
             salary = Double.parseDouble(fields[3].trim());
             departmentName = fields[4].trim();
 
+            if(salary<=0){ return false;}
+            
             return true;
         } else {
             return false;
