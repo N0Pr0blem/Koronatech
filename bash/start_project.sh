@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cd ../../../../../../
+cd ../
 
 echo "Starting compiling project..."
 mvn clean package
@@ -8,5 +8,5 @@ mvn clean package
 echo "Success!"
 echo "**************** RUN **********************"
 echo ""
-java -jar target/Koronatech-1.0-SNAPSHOT.jar --stat --output=console -s=salary --order=desc
+java -jar target/Koronatech-1.0-SNAPSHOT.jar --sort=name --order=asc --stat
 
