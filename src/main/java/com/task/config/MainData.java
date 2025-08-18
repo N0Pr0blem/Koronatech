@@ -6,6 +6,7 @@ import com.task.output.printer.impl.ConsolePrinter;
 import com.task.repository.SimpleRepository;
 import com.task.repository.impl.EmployeeListRepository;
 import com.task.repository.impl.ListRepository;
+import com.task.repository.impl.ManagerListRepository;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,7 @@ public class MainData {
 
     private final DecimalFormat decimalFormat = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US));
     private final EmployeeListRepository employeeRepository = new EmployeeListRepository();
-    private final SimpleRepository<Manager> managerRepository = new ListRepository<>();
+    private final ManagerListRepository managerRepository = new ManagerListRepository();
     private final SimpleRepository<String> errorsRepository = new ListRepository<>();
 
     @Setter

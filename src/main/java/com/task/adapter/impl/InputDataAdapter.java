@@ -32,7 +32,9 @@ public class InputDataAdapter implements Adapter<Void,String> {
                 }
                 else if(line.trim().charAt(0)=='M' || line.trim().charAt(0)=='m'){
                     Manager manager = managerParser.parse(line);
-                    if (managerIds.contains(manager.getId())) {
+                    if (managerIds.contains(manager.getId())
+                            && MainData.getInstance().getManagerRepository().findById(manager.getId()).getDepartmentName().equals(manager.getDepartmentName())
+                    ) {
                         throw new IllegalArgumentException("Duplicate manager ID: " + manager.getId());
                     }
                     managerIds.add(manager.getId());
