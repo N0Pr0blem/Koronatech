@@ -12,5 +12,4 @@ public interface SimpleRepository<T> {
 
     void sort(Comparator<T> comparator);
 
-
 }
